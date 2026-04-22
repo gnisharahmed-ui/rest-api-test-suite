@@ -1,6 +1,7 @@
 """
 Pytest configuration and shared fixtures for REST API test suite.
 """
+import os
 import pytest
 import requests
 from tests.utils.api_client import ApiClient
@@ -34,7 +35,8 @@ def base_url(request, env):
 @pytest.fixture(scope="session")
 def api_client(base_url):
     """Session-scoped API client with base URL configured."""
-    return ApiClient(base_url=base_url)
+    api_key = os.environ.get("REQRES_API_KEY")
+    return ApiClient(base_url=base_url, api_key=api_key)
 
 
 @pytest.fixture(scope="session")

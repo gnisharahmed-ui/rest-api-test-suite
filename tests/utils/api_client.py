@@ -16,14 +16,17 @@ class ApiClient:
     Supports auth token injection, base URL composition, and request logging.
     """
 
-    def __init__(self, base_url: str, timeout: int = 30):
+    def __init__(self, base_url: str, timeout: int = 30, api_key: str = None):
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
         self.session = requests.Session()
-        self.session.headers.update({
+        headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
-        })
+        }
+        if api_key:
+            headers["x-api-key"] = api_key
+        self.session.headers.update(headers)
 
     def set_auth_token(self, token: str):
         self.session.headers.update({"Authorization": f"Bearer {token}"})
